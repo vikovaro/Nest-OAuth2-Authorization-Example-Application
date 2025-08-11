@@ -12,8 +12,8 @@ async function bootstrap() {
     });
 
     const config = new DocumentBuilder()
-        .setTitle('1wrust survival docs')
-        .setDescription('The 1wrust survival API description')
+        .setTitle('test API')
+        .setDescription('API description')
         .setVersion('1.0')
         .build();
     const document = SwaggerModule.createDocument(app, config);

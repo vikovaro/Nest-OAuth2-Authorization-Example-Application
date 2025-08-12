@@ -3,10 +3,10 @@ import { IsEnum, IsOptional, IsString, IsUUID, MaxLength, Min, MinLength } from 
 import { ERole, TRole } from '../../auth/models/role.enum';
 
 export class UpdateUserRequest implements IUpdateUserRequest {
-    @ApiProperty({ example: '4da06a83-abf8-4f00-9423-fc06acd0f21d' })
+    @ApiProperty({ example: 1 })
     @IsUUID()
     @Min(0)
-    userId: string;
+    userId: number;
 
     @ApiProperty({ example: 'username' })
     @IsString()
@@ -50,7 +50,7 @@ export class UpdateUserRequest implements IUpdateUserRequest {
 }
 
 export interface IUpdateUserRequest {
-    userId: string;
+    userId: number;
     login?: string;
     name?: string;
     phone?: string;

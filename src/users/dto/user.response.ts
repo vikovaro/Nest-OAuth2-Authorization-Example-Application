@@ -3,9 +3,9 @@ import { Exclude, Expose } from 'class-transformer';
 import { ERole, TRole } from '../../auth/models/role.enum';
 
 export class UserResponse implements IUserResponse {
-    @ApiProperty({ example: '4da06a83-abf8-4f00-9423-fc06acd0f21d' })
+    @ApiProperty({ example: 1 })
     @Expose()
-    id: string;
+    id: number;
 
     @ApiProperty({ example: 'username' })
     @Expose()
@@ -36,7 +36,7 @@ export class UserResponse implements IUserResponse {
 }
 
 export interface IUserResponse {
-    id: string;
+    id: number;
     username: string;
     name: string;
     phone: string;

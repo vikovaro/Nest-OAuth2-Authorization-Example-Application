@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
 import { IUserResponse } from './dto/user.response';
 import { SignUpRequest } from '../auth/dto/sign-up.request';
 import { ISession } from '../auth/models/session.model';
 import { ERole } from '../auth/models/role.enum';
 import { UpdateUserRequest } from './dto/update.request';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class UserRepository {
-    constructor(private readonly prisma: PrismaClient) {}
+    constructor(private readonly prisma: PrismaService) {}
 
     BASE_USER_SELECT = {
         id: true,
@@ -20,21 +20,21 @@ export class UserRepository {
         createdAt: true,
     };
 
-    async getUserById(id: string): Promise<IUserResponse> {
+    async getUserById(id: number): Promise<IUserResponse | null> {
         return this.prisma.user.findUnique({
             where: { id: id },
             select: this.BASE_USER_SELECT,
         });
     }
 
-    async getUserByUsername(username: string): Promise<IUserResponse> {
+    async getUserByUsername(username: string): Promise<IUserResponse | null> {
         return this.prisma.user.findUnique({
             where: { username: username },
             select: this.BASE_USER_SELECT,
         });
     }
 
-    async getUserWithPassword(id: string) {
+    async getUserWithPassword(id: number) {
         return this.prisma.user.findUnique({
             where: { id: id },
         });
@@ -54,14 +54,14 @@ export class UserRepository {
         });
     }
 
-    async getSessionByRefreshToken(refreshToken: string): Promise<ISession> {
+    async getSessionByRefreshToken(refreshToken: string): Promise<ISession | null> {
         return this.prisma.session.findUnique({
             where: { refreshToken: refreshToken },
         });
     }
 
     async updateSession(
-        userId: string,
+        userId: number,
         accessToken: string,
         refreshToken: string,
     ): Promise<ISession> {
@@ -86,7 +86,7 @@ export class UserRepository {
         });
     }
 
-    async updateUser(updateData: UpdateUserRequest, userId: string): Promise<IUserResponse> {
+    async updateUser(updateData: UpdateUserRequest, userId: number): Promise<IUserResponse> {
         return this.prisma.user.update({
             where: { id: userId },
             data: {

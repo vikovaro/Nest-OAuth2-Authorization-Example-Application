@@ -16,7 +16,7 @@ export class UserService {
 
     constructor(private readonly userRepository: UserRepository) {}
 
-    async getUserById(id: string): Promise<IUserResponse> {
+    async getUserById(id: number): Promise<IUserResponse> {
         const user = await this.userRepository.getUserById(id);
 
         if (!user) {
@@ -26,7 +26,7 @@ export class UserService {
         return user;
     }
 
-    async updateUser(updateRequest: UpdateUserRequest, userId: string): Promise<IUserResponse> {
+    async updateUser(updateRequest: UpdateUserRequest, userId: number): Promise<IUserResponse> {
         const existingUser = await this.userRepository.getUserById(updateRequest.userId);
         if (!existingUser) {
             throw new NotFoundException('user-not-found');
@@ -34,11 +34,11 @@ export class UserService {
 
         const requestOwner = await this.userRepository.getUserById(userId);
 
-        if (updateRequest.userId !== userId && requestOwner.role !== ERole.Admin) {
+        if (updateRequest.userId !== userId && requestOwner!.role !== ERole.Admin) {
             throw new ForbiddenException('no-rights');
         }
 
-        if (updateRequest.role && requestOwner.role !== ERole.Admin) {
+        if (updateRequest.role && requestOwner!.role !== ERole.Admin) {
             throw new ForbiddenException('no-rights-for-updating-user-role');
         }
 

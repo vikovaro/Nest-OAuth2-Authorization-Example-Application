@@ -16,13 +16,13 @@ export class Session implements ISession {
     @Expose()
     refreshToken: string;
 
-    @ApiProperty({ example: '87a2c03e-192b-4cd9-8d76-dd11aa5a4883' })
+    @ApiProperty({ example: 1 })
     @Expose()
-    userId: string;
+    userId: number;
 }
 
 export interface ISession {
     accessToken: string;
     refreshToken: string;
-    userId: string;
+    userId: number;
 }

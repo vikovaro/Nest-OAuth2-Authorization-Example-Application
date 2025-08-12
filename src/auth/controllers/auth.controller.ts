@@ -4,16 +4,17 @@ import {
     HttpStatus,
     Post,
     Req,
+    Res,
     SerializeOptions,
     UseGuards,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import type { Request } from 'express';
-import { SignUpRequest } from './dto/sign-up.request';
-import { AuthService } from './auth.service';
-import { SignInRequest } from './dto/sign-in.request';
-import { AuthRefreshRestGuard } from './guards/auth-refresh.guad';
-import { TokensResponse } from './dto/tokens.response';
+import { SignUpRequest } from '../dto/sign-up.request';
+import { AuthService } from '../services/auth.service';
+import { SignInRequest } from '../dto/sign-in.request';
+import { AuthRefreshRestGuard } from '../guards/auth-refresh.guad';
+import { TokensResponse } from '../dto/tokens.response';
+import type { Request, Response } from 'express';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -28,8 +29,8 @@ export class AuthController {
         excludeExtraneousValues: true,
         enableImplicitConversion: true,
     })
-    async signUp(@Body() signUpDto: SignUpRequest) {
-        return await this.authService.signUp(signUpDto);
+    async signUp(@Body() signUpDto: SignUpRequest, @Res() res: Response) {
+        return await this.authService.signUp(signUpDto, res);
     }
 
     @Post('/login')
@@ -40,8 +41,8 @@ export class AuthController {
         excludeExtraneousValues: true,
         enableImplicitConversion: true,
     })
-    async signIn(@Body() signInDto: SignInRequest) {
-        return await this.authService.signIn(signInDto.username, signInDto.password);
+    async signIn(@Body() signInDto: SignInRequest, @Res() res: Response) {
+        return await this.authService.signIn(signInDto.username, signInDto.password, res);
     }
 
     @Post('/refresh')
@@ -57,7 +58,7 @@ export class AuthController {
         excludeExtraneousValues: true,
         enableImplicitConversion: true,
     })
-    async refreshToken(@Req() req: Request) {
-        return await this.authService.refreshToken(req['data'].token);
+    async refreshToken(@Req() req: Request, @Res() res: Response) {
+        return await this.authService.refreshToken(req['data'].token, res);
     }
 }
